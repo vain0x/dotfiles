@@ -1,0 +1,27 @@
+#!/bin/sh
+# <https://nodejs.org>
+# <https://yarnpkg.org>
+
+set -eu
+
+NODE_VERSION=12.18.2
+NODE_URI="https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz"
+
+NODE_TEMP="/tmp/node-$NODE_VERSION"
+NODE_HOME="/usr/local/src/node-v$NODE_VERSION"
+
+# ダウンロード・展開して配置する。
+rm -rf $NODE_TEMP
+curl $NODE_URI | tar -xJ -C /tmp
+sudo mv $NODE_TEMP $NODE_HOME
+
+# バイナリへのシンボリックリンクを設置する。
+ln -sbf $NODE_HOME/bin/node ~/bin/node
+ln -sbf $NODE_HOME/lib/node_modules/npm/bin/npm-cli.js ~/bin/npm
+ln -sbf $NODE_HOME/lib/node_modules/npm/bin/npx-cli.js ~/bin/npx
+
+# Yarn をインストールする。
+npm -g install yarn
+
+# 可能なら一時ファイルを削除する。
+rm -rf $NODE_TEMP || :

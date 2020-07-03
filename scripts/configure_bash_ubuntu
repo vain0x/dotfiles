@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -eu
+
+DOTFILES=$(git rev-parse --show-toplevel)
+
+ln -sbf $DOTFILES/config/.bash_aliases ~/.bash_aliases
+ln -sbf $DOTFILES/config/.bash_profile ~/.bash_profile
+
+. ~/.bash_profile

@@ -1,0 +1,193 @@
+[core]
+    # ファイルをコミットするとき、テキストファイルの改行文字を LF に自動変換する。ファイルをリストアするときは自動変換を行わない。(CRLF でコミットされている場合は、CRLF のままリストアされる。)
+    autocrlf = input
+
+    # コミットメッセージなどを編集するときのコマンド
+    editor = code --wait
+
+    # すべてのリポジトリに適用する除外設定
+    excludesfile = ~/.gitignore
+
+    pager = delta --light
+
+    # ファイルパスに含まれる非 ASCII 文字をエスケープする機能を無効化する。
+    quotepath = false
+[color]
+    ui = true
+[gui]
+    encoding = utf-8
+    stageuntracked = no
+[include]
+    path = ~/.gitalias.txt
+[interactive]
+    diffFilter = delta --color-only
+[merge]
+    # ファストフォワード・マージを使わず、必ずマージコミットを作成する。
+    # (ファストフォワード・マージがしたいときは merge --ff を使う。)
+    ff = false
+[pager]
+    # ブランチのリストを表示するとき、ページャを使わない。
+    branch = false
+[pull]
+    # git pull でファストフォワード・マージを使う。
+    ff = true
+[push]
+    # git push でブランチを指定しなかったとき、現在のブランチを対応する upstream にプッシュする。
+    # (ブランチに対応する upstream を登録するには push -u を使う。)
+    default = current
+[rebase]
+    # rebase の前に stash する。(作業ツリーがクリーンでないときのみ。)
+    autoStash = true
+[alias]
+    # --------------------------------------------
+    # コミット
+    # --------------------------------------------
+
+    # 作業ツリーのすべての変更をコミットする。
+    # --show-toplevel: 作業ツリーのルートディレクトリへのパスを出力する。
+    #   (これにより、リポジトリ内のすべてのファイルが add される。)
+    # --verbose: コミットメッセージの編集時に差分を表示する。
+    c-all = !git add $(git rev-parse --show-toplevel) && git commit --all --verbose
+
+    # 新しいコミットを作る。
+    c = commit --verbose
+
+    # WIP コミットを作る。(空のプルリクエストを作るときなどに使う。)
+    c-wip = !git reset && git commit --allow-empty -m WIP
+
+    # ドラフトコミットを作る。(一時的に内容を保存するときに使う。)
+    # USAGE: git c-draft <message>
+    c-draft = !"f() { git commit -m \"wip! $1\"; } ; f"
+
+    # バックアップコミットを作る。
+    c-backup = !git add $(git rev-parse --show-toplevel) && git commit -m Backup
+
+    # 作業ツリーの変更と、最新のコミットを消去する。(作業ツリーの変更は一度コミットして、reflog に残す。)
+    c-drop = !git discard && git reset HEAD~ --keep && git discard
+
+    # ステージの変更を HEAD コミットに合成する。(gitalias の ca と同じ。)
+    amend = commit --amend
+
+    # 作業ツリーのすべての変更を HEAD コミットに合成する。
+    amend-all = !git add $(git rev-parse --show-toplevel) && git commit --amend --no-edit
+
+    # 作業ツリーのすべての変更を消去する。(git reset と違って、変更を一度コミットして reflog に残す。)
+    # 間違って使ったときは、discard-undo や reflog を使うか、生成されたコミットを cherry-pick する。
+    discard = !git add $(git rev-parse --show-toplevel) && git commit --allow-empty -m 'wip! Discard all changes' && git reset HEAD~ --hard
+
+    # 直前に discard されたコミットを復元する。
+    # FIXME: Should it search for the latest commit with 'wip! Discard' in subject?
+    discard-undo = merge --ff --ff-only HEAD@{1}
+
+    # (gitalias の rbi をシャドウイングする。)
+    rbi = rebase --interactive
+
+    # --------------------------------------------
+    # ブランチ
+    # --------------------------------------------
+
+    sw = switch
+
+    # origin の各ブランチに対してローカルブランチを作る。
+    b-all = "!f () { git branch --remote | awk -F'origin/' '!/HEAD|master/{print $2 \" \" $1\"origin/\"$2}' | xargs -L 1 git branch --track --force ; } ; f"
+
+    # 作業ツリーやインデックスを変更することなく、master ブランチに移動する。
+    up-safe = symbolic-ref HEAD refs/heads/master
+
+    # --------------------------------------------
+    # ステータス
+    # --------------------------------------------
+
+    # 現在のステータスを表示する。
+    s = !git branch --verbose --sort=authordate && git status --short
+
+    # --------------------------------------------
+    # ログ
+    # --------------------------------------------
+
+    l = !"f() { BASE=${1:-'master'} ; shift ; git log --graph --abbrev-commit --date=short --decorate --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset%C(yellow)%d%Creset %s %Cblue[%cn]%Creset %Cblue%G?%Creset' ${1:-'master'}..HEAD \"$@\" ; } ; f"
+
+    # log-latest. 最近のコミットログを表示する。(gitalias の ll をシャドウイングする。)
+    ll = !git --no-pager log -n 8 --graph --abbrev-commit --date=iso --decorate --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset%C(yellow)%d%Creset %s %Cblue[%cn]%Creset %Cblue%G?%Creset'
+
+    # --------------------------------------------
+    # マージ
+    # --------------------------------------------
+
+    # ファストフォワードでマージする。
+    m-ff = merge --ff --ff-only
+
+    # カレントブランチを develop にマージする。カレントブランチは削除して、develop にスイッチする。
+    m-dev = !br_name=`git symbolic-ref --short HEAD` && git checkout develop && git merge ${br_name} --no-ff --edit && git branch -d ${br_name}
+
+    # カレントブランチを master にマージする。カレントブランチは削除して、master にスイッチする。
+    m-mas = !br_name=`git symbolic-ref --short HEAD` && git checkout master && git merge ${br_name} --no-ff --edit && git branch -d ${br_name}
+
+    # --------------------------------------------
+    # 同期
+    # --------------------------------------------
+
+    push-tag = push --tags
+
+    push-all = !git push --all --set-upstream && git push --tags
+
+    # --------------------------------------------
+    # その他
+    # --------------------------------------------
+
+    # タイポを自動訂正する。(git git commit など。)
+    git = !git
+    g = !git
+    cd = !cd
+
+    x-curl = !curl
+
+    x-ssh-keygen = !ssh-keygen
+
+    # .gitattributes を生成する。
+    x-attr = !"f() { set -eu ; echo '* text=auto' >.gitattributes ; } ; f"
+
+    # .gitignore を生成する。
+    x-ignore = !"f() { set -eu ; curl -sL \"https://www.gitignore.io/api/$1\" -o .gitignore ; } ; f"
+
+    x-editorconfig = !"f() { set -eu ; echo 'root = true' ; } ; f"
+
+    x-git = "!f() { git x-ignore \"$@\" ; git x-attr ; git x-editorconfig ; } ; f"
+
+    # gitalias の設定ファイルを開く。
+    x-gitalias = !"code ~/.gitalias.txt"
+
+    # ファイルの行数を集計する。
+    x-cloc = !"f() { git ls-files | xargs wc -l ; } ; f"
+
+    # Commits Paket files.
+    x-paket-download-bootstrapper = !mkdir -p .paket && curl -L -o .paket/paket.bootstrapper.exe $(curl -s https://api.github.com/repos/fsprojects/Paket/releases/latest | grep browser_download_url | grep -Po https://github.com/fsprojects/Paket/releases/download/[0-9.]+/paket.bootstrapper.exe)
+
+    x-paket-commit = !.paket/paket.bootstrapper.exe && .paket/paket.exe init && .paket/paket.exe install && git add .paket *paket* && git commit -m 'Install Paket'
+
+    x-paket-install = !git x-paket-download-bootstrapper && git x-paket-commit
+
+    # --------------------------------------------
+    # 実験
+    # --------------------------------------------
+
+    # ローカルリポジトリの設定で除外されているファイルパスを表示する。
+    exclude-path = !echo $(git rev-parse --git-dir)/info/exclude
+
+    # ローカルリポジトリにおいてファイルパスを除外登録する。
+    exclude-add = !head -n 1 >> $(git rev-parse --git-dir)/info/exclude
+
+    # --------------------------------------------
+    # 自分用
+    # --------------------------------------------
+
+    # リポジトリのユーザーを vain0x <vainzerox@gmail.com> にする。
+    as-vain0x = !git config user.name 'vain0x' && git config user.email 'vainzerox@gmail.com'
+
+    # --------------------------------------------
+    # 廃止
+    # --------------------------------------------
+
+    co = !'echo \"Use git-switch instead\"'
+
+    cob = !'echo \"Use git switch -c instead\"'

@@ -1,0 +1,14 @@
+#!/bin/sh
+# Ubuntu にツール類をインストールする。
+
+set -eux
+
+./scripts/install_node_ubuntu
+./scripts/install_rust_ubuntu
+./scripts/install_delta
+
+cargo install exa -j4
+cargo install fd-find -j4
+cargo install ripgrep -j4
+
+: OK

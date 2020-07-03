@@ -1,0 +1,10 @@
+#!/bin/sh
+# Ubuntu に設定などをインストールする。
+# root ユーザーだと sudo が使えないので、add_user を使って別のユーザーになってから実行する。
+
+set -eux
+
+./configure_bash_ubuntu
+./install_git_ubuntu
+
+: OK

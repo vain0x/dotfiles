@@ -1,0 +1,20 @@
+#!/bin/sh
+# <https://github.com/dandavison/delta#installation>
+
+set -eu
+
+git --version
+cargo --version
+
+DELTA_REPO='https://github.com/dandavison/delta'
+DELTA_DIR="$HOME/repo/github.com/dandavison"
+
+mkdir -p $DELTA_DIR
+git clone $DELTA_REPO $DELTA_DIR
+
+(
+    cd $DELTA_DIR
+    cargo build --release -j
+
+    cp -f target/release/delta{,.exe} ~/bin || :
+)

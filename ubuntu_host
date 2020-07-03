@@ -1,0 +1,8 @@
+#!/bin/sh
+# 仮想環境ではない Ubuntu にいろいろ入れる。
+
+set -eux
+
+./scripts/install_fonts_ubuntu
+./scripts/install_vscode_ubuntu
+./scripts/install_docker_ubuntu

@@ -1,0 +1,17 @@
+#!/bin/sh
+# EXAMPLE:
+#   ./add_user
+
+set -eu
+
+USER_NAME=$1
+
+# ユーザーを追加する。
+useradd -m $USER_NAME
+
+# パスワードを設定する。
+passwd $USER_NAME
+
+# sudo を許可する。
+echo "$USER_NAME ALL=(ALL) NOPASSWD: ALL" | \
+    sudo tee "/etc/sudoers.d/$USER_NAME"

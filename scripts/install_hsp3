@@ -1,0 +1,45 @@
+#!/bin/sh
+# [HSP3.6β2を公開しました](https://www.onionsoft.net/wp/archives/3154)
+
+set -eu
+
+# ユーザーのアプリをインストールするディレクトリ
+APPDATA="${APPDATA:-'/usr/local/src'}"
+# ダウンロード元
+HSP3_URI='http://www.onionsoft.net/wp/download/79/'
+# インストール先
+HSP3_HOME="$APPDATA/hsp36b2"
+
+# 作業用の一時ディレクトリ
+HSP3_TMP="/tmp/hsp-$(date '+%s')"
+# 圧縮ファイルの一時配置先
+HSP3_ARCHIVE="$HSP3_TMP/hsp.zip"
+
+if test -f "$HSP3_HOME/hsp3.exe"
+then
+    echo "INFO: インストール済みなので何もしません '$HSP3_HOME'"
+    exit 0
+fi
+
+# 7za がインストールされていることを確認する。
+7za --help
+
+# 一時ディレクトリがなければ生成する。
+mkdir -p "$HSP3_TMP"
+
+# インストール先のディレクトリの親がなければ生成し、
+# インストール先のディレクトリ自体が存在するなら削除しておく。
+mkdir -p "$HSP3_HOME"
+rm -rf "$HSP3_HOME"
+
+# 圧縮ファイルをダウンロードする。
+curl -sL "$HSP3_URI" -o "$HSP3_ARCHIVE"
+# 圧縮ファイルの中身を一時ディレクトリに展開する。
+7za x "-o$HSP3_TMP" "$HSP3_ARCHIVE" >>/tmp/7za.log
+# 展開されたディレクトリをインストール先に移動する。
+mv "$HSP3_TMP/hsp36beta" "$HSP3_HOME"
+
+# 一時ディレクトリを削除する。
+rm -rf "$HSP3_TMP" || :
+
+echo "INFO: インストール成功 '$HSP3_HOME'"

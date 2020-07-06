@@ -34,7 +34,9 @@ x_workdir_is_git_repo() {
 
 # いまのディレクトリの概要を表示する。
 x_workdir_summary() {
-    ls -l --human-readable --almost-all
+    # FIXME: ファイル数が多いとき困る。
+    # ls -l --human-readable --almost-all | head -n 10
+
     x_workdir_is_git_repo && git s
 }
 

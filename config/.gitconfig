@@ -145,10 +145,10 @@
     x-ssh-keygen = !ssh-keygen
 
     # .gitattributes を生成する。
-    x-attr = !"f() { set -eu ; echo '* text=auto' >.gitattributes ; } ; f"
+    x-attr = !"f() { set -eu ; echo '* text=auto' >${GIT_PREFIX:-.}/.gitattributes ; } ; f"
 
     # .gitignore を生成する。
-    x-ignore = !"f() { set -eu ; curl -sL \"https://www.gitignore.io/api/$1\" -o .gitignore ; } ; f"
+    x-ignore = !"f() { set -eu ; curl -sL \"https://www.gitignore.io/api/$1\" -o ${GIT_PREFIX:-.}/.gitignore ; } ; f"
 
     x-editorconfig = !"f() { set -eu ; echo 'root = true' ; } ; f"
 

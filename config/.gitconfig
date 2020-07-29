@@ -3,7 +3,7 @@
     autocrlf = input
 
     # コミットメッセージなどを編集するときのコマンド
-    editor = code --wait
+    editor = "subl --wait"
 
     # すべてのリポジトリに適用する除外設定
     excludesfile = ~/.gitignore

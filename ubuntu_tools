@@ -11,4 +11,6 @@ cargo install exa -j4
 cargo install fd-find -j4
 cargo install ripgrep -j4
 
+cargo install editorconfig --git https://github.com/vain0x/editorconfig
+
 : OK

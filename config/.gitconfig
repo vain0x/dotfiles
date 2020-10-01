@@ -1,7 +1,4 @@
 [core]
-    # ファイルをコミットするとき、テキストファイルの改行文字を LF に自動変換する。ファイルをリストアするときは自動変換を行わない。(CRLF でコミットされている場合は、CRLF のままリストアされる。)
-    autocrlf = input
-
     # コミットメッセージなどを編集するときのコマンド
     editor = code --wait
 
@@ -145,14 +142,13 @@
     x-ssh-keygen = !ssh-keygen
 
     # .gitattributes を生成する。
-    x-attr = !"f() { set -eu ; echo '* text=auto' >.gitattributes ; } ; f"
+    x-attr = !"f() { set -eu ; echo '* text=auto eol=lf' >${GIT_PREFIX:-.}/.gitattributes ; } ; f"
 
     # .gitignore を生成する。
-    x-ignore = !"f() { set -eu ; curl -sL \"https://www.gitignore.io/api/$1\" -o .gitignore ; } ; f"
+    x-ignore = !"f() { set -eu ; curl -sL \"https://www.gitignore.io/api/$1\" -o ${GIT_PREFIX:-.}/.gitignore ; grep 'is undefined' ${GIT_PREFIX:-.}/.gitignore >&2 || : ; } ; f"
 
-    x-editorconfig = !"f() { set -eu ; echo 'root = true' ; } ; f"
-
-    x-git = "!f() { git x-ignore \"$@\" ; git x-attr ; git x-editorconfig ; } ; f"
+    # 各種 dotfiles を生成する。
+    x-dotfiles = !"f() { git x-ignore \"$1\"; git x-attr; editorconfig \"$1\"; }; f"
 
     # gitalias の設定ファイルを開く。
     x-gitalias = !"code ~/.gitalias.txt"

@@ -1,0 +1,39 @@
+#!/bin/sh
+# zip ファイルを展開するためのコマンドラインツール 7za.exe をインストールする。
+
+# 動機:
+#     備え付けの unzip コマンドだと展開に失敗することがある。
+#     [bash - unzip\: gives\: checkdir error\: .../directory exists but is not a directory - Stack Overflow](https://stackoverflow.com/questions/32467871/unzip-gives-checkdir-error-directory-exists-but-is-not-a-directory)
+
+set -eu
+
+# ダウンロード元
+SEVEN_ZIP_URI='https://www.7-zip.org/a/7za920.zip'
+# インストール先
+SEVEN_ZIP_BIN="$HOME/bin/7za.exe"
+
+# 作業用の一時ディレクトリ
+SEVEN_ZIP_TMP="/tmp/7za-$(date '+%s')"
+# 圧縮ファイルの一時配置先
+SEVEN_ZIP_ARCHIVE="$SEVEN_ZIP_TMP/7za.zip"
+
+if test -f "$SEVEN_ZIP_BIN"
+then
+    echo "INFO: インストール済みなので何もしません '$SEVEN_ZIP_BIN'"
+    exit 0
+fi
+
+# 一時ディレクトリがなければ生成する。
+mkdir -p "$SEVEN_ZIP_TMP"
+
+# 圧縮ファイルをダウンロードする。
+curl -sL "$SEVEN_ZIP_URI" -o "$SEVEN_ZIP_ARCHIVE"
+# 圧縮ファイルの中身を一時ディレクトリに展開する。
+unzip -q "$SEVEN_ZIP_ARCHIVE" -d "$SEVEN_ZIP_TMP"
+# 実行ファイルをインストール先に移動する。
+mv "$SEVEN_ZIP_TMP/7za.exe" "$SEVEN_ZIP_BIN"
+
+# 一時ディレクトリを消去する。
+rm -rf "$SEVEN_ZIP_TMP" || :
+
+echo "INFO: インストール成功 '$SEVEN_ZIP_BIN'"

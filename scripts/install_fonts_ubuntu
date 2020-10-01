@@ -1,9 +1,12 @@
 #!/bin/sh
 # [UbuntuTips/Desktop/InstallFont - Ubuntu Japanese Wiki](https://wiki.ubuntulinux.jp/UbuntuTips/Desktop/InstallFont#A.2BYktS1TBnMKQw8zC5MMgw.2FDDrMFkwiw-)
 
+# <https://github.com/JetBrains/JetBrainsMono>
 # <https://github.com/adobe-fonts/source-han-code-jp>
 
 set -eu
+
+JETBRAINS_MONO_URI='https://github.com/JetBrains/JetBrainsMono/releases/download/v2.001/JetBrains.Mono.2.001.zip'
 
 if test ! $(which fc-cache)
 then
@@ -14,5 +17,11 @@ fi
 mkdir -p ~/.fonts
 
 curl -L 'https://github.com/adobe-fonts/source-han-code-jp/archive/2.011R.tar.gz' | tar -xz -C ~/.fonts
+
+if test ! -d ~/.fonts/jet-brains-mono
+then
+    curl -sL "$JETBRAINS_MONO_URI" -o /tmp/jet-brains-mono.zip
+    unzip -q /tmp/jet-brains-mono.zip -d ~/.fonts
+fi
 
 sudo fc-cache -fv

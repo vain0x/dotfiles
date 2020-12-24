@@ -2,9 +2,6 @@
     # コミットメッセージなどを編集するときのコマンド
     editor = code --wait
 
-    # すべてのリポジトリに適用する除外設定
-    excludesfile = ~/.gitignore
-
     pager = delta --light
 
     # ファイルパスに含まれる非 ASCII 文字をエスケープする機能を無効化する。
@@ -14,8 +11,6 @@
 [gui]
     encoding = utf-8
     stageuntracked = no
-[include]
-    path = ~/.gitalias.txt
 [interactive]
     diffFilter = delta --color-only
 [merge]

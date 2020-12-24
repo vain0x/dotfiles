@@ -4,7 +4,14 @@ set -eu
 
 DOTFILES=$(git rev-parse --show-toplevel)
 
-ln -sbf $DOTFILES/config/.bash_aliases ~/.bash_aliases
-ln -sbf $DOTFILES/config/.bash_profile ~/.bash_profile
+install_bash_config() {
+    SRC=$1
+    DEST=$2
+
+    test -f "$DEST" || echo "test -r '$SRC' && . '$SRC'" >$DEST
+}
+
+install_bash_config "$DOTFILES/config/.bash_aliases" ~/.bash_aliases
+install_bash_config "$DOTFILES/config/.bash_profile" ~/.bash_profile
 
 . ~/.bash_profile

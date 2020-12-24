@@ -12,6 +12,14 @@ sudo apt update
 sudo apt install -y git
 
 # 設定ファイルを配置する。
-ln -sbf $DOTFILES/config/.gitconfig ~/.gitconfig
-ln -sbf $DOTFILES/config/.gitignore ~/.gitignore
-ln -sbf $DOTFILES/vendor/gitalias/gitalias.txt ~/.gitalias.txt
+if test ! -f ~/.gitconfig
+then
+    cat >~/.gitconfig <<END
+[include]
+    path = "$DOTFILES/vendor/gitalias/gitalias.txt"
+    path = "$DOTFILES/config/.gitconfig"
+
+[core]
+    excludesfile = "$DOTFILES/config/.gitignore"
+END
+fi

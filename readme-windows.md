@@ -64,10 +64,6 @@ VCS:
 
 - [pwsh](https://github.com/PowerShell/PowerShell/releases/latest)
 
-フォント:
-
-- [Source Han Code JP](https://github.com/adobe-fonts/source-han-code-jp/releases/latest)
-
 ### その他
 
 - Clementine

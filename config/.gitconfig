@@ -143,7 +143,7 @@
     x-ignore = !"f() { set -eu ; curl -sL \"https://www.gitignore.io/api/$1\" -o ${GIT_PREFIX:-.}/.gitignore ; grep 'is undefined' ${GIT_PREFIX:-.}/.gitignore >&2 || : ; } ; f"
 
     # 各種 dotfiles を生成する。
-    x-dotfiles = !"f() { git x-ignore \"$1\"; git x-attr; editorconfig \"$1\"; }; f"
+    x-dotfiles = !"f() { git x-ignore \"$1\"; git x-attr; cd ${GIT_PREFIX:-.}; editorconfig \"$1\"; }; f"
 
     # gitalias の設定ファイルを開く。
     x-gitalias = !"code ~/.gitalias.txt"

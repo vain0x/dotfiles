@@ -1,5 +1,9 @@
-*.bak
-*.backup
+# patch: Rejected hunk files.
+*.rej
+
+# ionide-fsharp (F#)
+.ionide
+.fake
 
 
 

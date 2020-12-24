@@ -97,7 +97,8 @@
     # ログ
     # --------------------------------------------
 
-    l = !"f() { BASE=${1:-'master'} ; shift ; git log --graph --abbrev-commit --date=short --decorate --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset%C(yellow)%d%Creset %s %Cblue[%cn]%Creset %Cblue%G?%Creset' ${1:-'master'}..HEAD \"$@\" ; } ; f"
+    # log-from. 特定のコミットから現在のコミットまでの履歴を表示する。
+    l-from = !"f() { BASE=${1:-master} ; git log --graph --abbrev-commit --date=short --decorate --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset%C(yellow)%d%Creset %s %Cblue[%cn]%Creset %Cblue%G?%Creset' $BASE..HEAD \"$@\" ; } ; f"
 
     # log-latest. 最近のコミットログを表示する。(gitalias の ll をシャドウイングする。)
     ll = !git --no-pager log -n 8 --graph --abbrev-commit --date=iso --decorate --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset%C(yellow)%d%Creset %s %Cblue[%cn]%Creset %Cblue%G?%Creset'

@@ -54,13 +54,44 @@ cd ~/repo/local/dotfiles && \
 
 ## 手順
 
-### GitHub に鍵ペアを登録する
+### SSH 鍵を生成する
 
-鍵ペアを生成する。
+(SSH で接続するのに使う。)
 
 ```sh
-ssh-keygen
-cat ~/.ssh/id_rsa.pub
+ssh-keygen && cat ~/.ssh/id_rsa.pub
+```
+
+### GPG 鍵を生成する
+
+(Git のコミットへの署名などに使う。)
+
+```sh
+# gpg コマンドをインストールする。 <https://www.gnupg.org/download/>
+#   Windows: choco install -y gpg4win
+
+# キーを生成する。(キー長を 4096 ビットにする以外は既定値。ユーザー名は vain0x, メールアドレスは vainzerox@gmail.com)
+gpg --full-generate-key
+
+# キー ID を確認する。
+# 横棒の次の行、'sec   rsa4096/([A-F0-9]+) 20\d\d-\d\d-\d\d \[SC\]' の $1 部分を $KEY_ID とする。
+gpg --list-secret-keys --keyid-format LONG
+
+# キーをエクスポートする。
+gpg --armor --export $KEY_ID
+```
+
+GitHub の [SSH and GPG keys](https://github.com/settings/keys) で鍵を登録する。
+
+- 参考: <https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/managing-commit-signature-verification>
+
+Git に登録する。
+
+```sh
+KEY_ID=$KEY_ID
+
+git config gpg.program gpg
+git config --global user.signingkey $KEY_ID
 ```
 
 ### VSCode の設定を同期する

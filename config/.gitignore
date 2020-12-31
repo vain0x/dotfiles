@@ -5,6 +5,9 @@
 .ionide
 .fake
 
+# Ignored files.
+*.ignored.*
+
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/git,mercurial,linux,macos,svn,windows

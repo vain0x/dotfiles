@@ -40,6 +40,20 @@ x_workdir_summary() {
     x_workdir_is_git_repo && git s
 }
 
+# ./scripts 以下のスクリプトを実行する。
+x() {
+    SCRIPT="${1:-}"
+    shift
+
+    if test -z "$SCRIPT"
+    then
+        # 実行可能ファイルを列挙する。
+        find ./scripts -maxdepth 1 -type f -executable -exec basename {} \;
+    else
+        "./scripts/$SCRIPT" "$@"
+    fi
+}
+
 # git コマンドの略記
 g() {
     if test $# -eq 0

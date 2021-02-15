@@ -49,7 +49,7 @@
 
     # ドラフトコミットを作る。(一時的に内容を保存するときに使う。)
     # USAGE: git c-draft <message>
-    c-draft = !"f() { git commit -m \"wip! $1\"; } ; f"
+    c-draft = !"f() { git commit -m \"wip! $1 [skip ci]\"; } ; f"
 
     # バックアップコミットを作る。
     c-backup = !git add $(git rev-parse --show-toplevel) && git commit -m Backup
@@ -65,7 +65,7 @@
 
     # 作業ツリーのすべての変更を消去する。(git reset と違って、変更を一度コミットして reflog に残す。)
     # 間違って使ったときは、discard-undo や reflog を使うか、生成されたコミットを cherry-pick する。
-    discard = !git add $(git rev-parse --show-toplevel) && git commit --allow-empty -m 'wip! Discard all changes' && git reset HEAD~ --hard
+    discard = !git add $(git rev-parse --show-toplevel) && git commit --allow-empty -m 'wip! Discard all changes [skip ci]' && git reset HEAD~ --hard
 
     # 直前に discard されたコミットを復元する。
     # FIXME: Should it search for the latest commit with 'wip! Discard' in subject?

@@ -1,7 +1,6 @@
 # ログインシェルでないときに実行される。
 
 alias n='npm run'
-alias fd='findfd'
 
 # プロンプトをこんな感じにする:
 #    ~/repo/local/dotfiles

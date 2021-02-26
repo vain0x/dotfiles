@@ -33,10 +33,12 @@ x_workdir_is_git_repo() {
 
 # いまのディレクトリの概要を表示する。
 x_workdir_summary() {
-    # FIXME: ファイル数が多いとき困る。
-    # ls -l --human-readable --almost-all | head -n 10
+    ls --almost-all --color -C | head -n 3
 
-    x_workdir_is_git_repo && git s
+    if x_workdir_is_git_repo
+    then
+        git -c 'color.branch=always' -c 'color.status=always' s | tail -n 5
+    fi
 }
 
 # ./scripts 以下のスクリプトを実行する。

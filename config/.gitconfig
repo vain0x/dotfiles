@@ -48,7 +48,11 @@
     c = commit --verbose
 
     # WIP コミットを作る。(空のプルリクエストを作るときなどに使う。)
-    c-wip = !"f() { git add $(git rev-parse --show-toplevel) && git commit --allow-empty -m \"wip! $* [skip ci]\"; }; f"
+    # USAGE: c-wip <message>
+    #
+    # 何らかの変更が stage にある場合は commit のみ行う。
+    # 変更が stage されていない場合は、すべてのファイルを add してから commit する。
+    c-wip = !"f() { if test -z \"$(git diff --cached)\"; then git add $(git rev-parse --show-toplevel); fi && git commit --allow-empty -m \"wip! $* [skip ci]\"; }; f"
 
     # ドラフトコミットを作る。(一時的に内容を保存するときに使う。)
     # USAGE: git c-draft <message>

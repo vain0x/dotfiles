@@ -49,7 +49,7 @@
 
     # ドラフトコミットを作る。(一時的に内容を保存するときに使う。)
     # USAGE: git c-draft <message>
-    c-draft = !"f() { git commit -m \"wip! $1 [skip ci]\"; } ; f"
+    c-draft = !"f() { git commit -m \"wip! $* [skip ci]\"; }; f"
 
     # バックアップコミットを作る。
     c-backup = !git add $(git rev-parse --show-toplevel) && git commit -m Backup

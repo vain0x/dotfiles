@@ -91,7 +91,7 @@
     # --------------------------------------------
 
     # 現在のステータスを表示する。
-    s = !git branch --verbose --sort=authordate && git status --short
+    s = !git branch --color --verbose --sort=authordate && git -c 'color.status=always' status --short 
 
     # --------------------------------------------
     # ログ

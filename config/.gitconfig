@@ -1,3 +1,6 @@
+[user]
+    # ユーザー名が設定されていないときにコンピュータのユーザー名を利用するかどうか。(true: しない)
+    useConfigOnly = true
 [core]
     # コミットメッセージなどを編集するときのコマンド
     editor = code --wait

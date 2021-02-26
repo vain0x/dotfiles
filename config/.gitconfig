@@ -80,6 +80,8 @@
 
     sw = switch
 
+    fork = switch -c
+
     # origin の各ブランチに対してローカルブランチを作る。
     b-all = "!f () { git branch --remote | awk -F'origin/' '!/HEAD|master/{print $2 \" \" $1\"origin/\"$2}' | xargs -L 1 git branch --track --force ; } ; f"
 

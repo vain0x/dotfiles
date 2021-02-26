@@ -45,7 +45,7 @@
     c = commit --verbose
 
     # WIP コミットを作る。(空のプルリクエストを作るときなどに使う。)
-    c-wip = !git reset && git commit --allow-empty -m WIP
+    c-wip = !"f() { git add $(git rev-parse --show-toplevel) && git commit --allow-empty -m \"wip! $* [skip ci]\"; }; f"
 
     # ドラフトコミットを作る。(一時的に内容を保存するときに使う。)
     # USAGE: git c-draft <message>

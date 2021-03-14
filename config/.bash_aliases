@@ -23,7 +23,12 @@ cd() {
 
 # mkdir + cd
 mkcd() {
-    test $# -gt 1 && mkdir -p "$@" && cd "$@"
+    if test $# -eq 0
+    then
+        echo 'mkcd [DIR]'
+    else
+        mkdir -p "$@" && cd "$1"
+    fi
 }
 
 # いまのディレクトリが Git リポジトリの作業ツリーか？

@@ -1,3 +1,4 @@
+#!/bin/bash
 # ログインシェルで実行される。
 
 PATH="$HOME/bin:$PATH"

@@ -1,3 +1,4 @@
+#!/bin/bash
 # ログインシェルでないときに実行される。
 
 alias n='npm run'

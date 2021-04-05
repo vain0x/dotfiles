@@ -55,11 +55,17 @@ x() {
     if test -z "$SCRIPT"
     then
         # 実行可能ファイルを列挙する。
-        find ./scripts -maxdepth 1 -type f -executable -exec basename {} \;
+        find ./scripts -maxdepth 1 -type f -executable -printf '%f\n'
     else
         "./scripts/$SCRIPT" "$@"
     fi
 }
+
+_x_completion() {
+    COMPREPLY=( $(compgen -W "$(x)" -- ${COMP_WORDS[COMP_CWORD]}) )
+}
+
+complete -F _x_completion x
 
 # git コマンドの略記
 g() {

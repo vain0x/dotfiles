@@ -19,7 +19,7 @@ fi
 
 # cd の直後にディレクトリの概要を出力する。
 cd() {
-    builtin cd "$@" && x_workdir_summary
+    test $# -ne 0 && builtin cd "$@" && x_workdir_summary
 }
 
 # mkdir + cd

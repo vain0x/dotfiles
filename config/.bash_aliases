@@ -77,6 +77,8 @@ g() {
     fi
 }
 
+__git_complete g __git_main
+
 # npm でローカルにインストールしたコマンドを実行する。
 # EXAMPLE: npx tsc -w
 nx() {

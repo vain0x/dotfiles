@@ -17,6 +17,9 @@ else
     PS1='${NEWLINE} ${PWD}${NEWLINE} $ '
 fi
 
+# historyから除外するコマンドを設定する。
+export HISTIGNORE='g:g amend-all:g amend --no-edit:g b -D*:g c-all:g push -f*:g reset*:cd ..:ls:rm -f*:rm -rf*:exit:history:shutdown*:#*'
+
 # cd の直後にディレクトリの概要を出力する。
 cd() {
     test $# -ne 0 && builtin cd "$@" && x_workdir_summary

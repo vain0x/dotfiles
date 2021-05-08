@@ -42,8 +42,8 @@ function installBashConfig($src, $dest) {
 }
 
 installBashConfig "$dotfiles/config/.bash_aliases" "$env:UserProfile/.bash_aliases"
-installBashConfig "$dotfiles/config/.bash_profile" "$env:UserProfile/.bash_profile"
 installBashConfig "$dotfiles/config/.bashrc" "$env:UserProfile/.bashrc"
+installBashConfig "$dotfiles/config/.profile" "$env:UserProfile/.profile"
 
 # ------------------------------------------------
 # pwsh の設定ファイルの配置

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # ログインシェルで実行される。
 
 PATH="$HOME/bin/node-v14.15.5-linux-x64/bin:$PATH"
@@ -10,6 +10,5 @@ export PATH
 
 export LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH
 
-# test -r ~/.profile && . ~/.profile
-
-test -r ~/.bashrc && . ~/.bashrc
+# test -n "$BASH_PROFILE" && test -r ~/.bash_profile && . ~/.bash_profile
+test -n "$BASH_VERSION" && test -r ~/.bashrc && . ~/.bashrc

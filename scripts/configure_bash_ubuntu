@@ -12,6 +12,6 @@ install_bash_config() {
 }
 
 install_bash_config "$DOTFILES/config/.bash_aliases" ~/.bash_aliases
-install_bash_config "$DOTFILES/config/.bash_profile" ~/.bash_profile
+install_bash_config "$DOTFILES/config/.profile" ~/.profile
 
-. ~/.bash_profile
+. ~/.profile

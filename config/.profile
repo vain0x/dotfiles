@@ -6,6 +6,7 @@ PATH="$HOME/.cargo/bin:$PATH"
 PATH="$HOME/.dotnet/tools:$PATH"
 PATH="$HOME/.local:$PATH"
 PATH="$HOME/bin:$PATH"
+PATH="$HOME/usr/bin:$PATH"
 export PATH
 
 export LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH

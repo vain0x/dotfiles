@@ -16,6 +16,8 @@
     stageuntracked = no
 [interactive]
     diffFilter = delta --color-only --light
+[log]
+    date = iso
 [merge]
     # ファストフォワード・マージを使わず、必ずマージコミットを作成する。
     # (ファストフォワード・マージがしたいときは merge --ff を使う。)

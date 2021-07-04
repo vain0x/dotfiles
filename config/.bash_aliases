@@ -102,6 +102,20 @@ nx() {
     fi
 }
 
+# nの入力補完
+_n_complete() {
+    PARTIAL="${COMP_WORDS[COMP_CWORD]}"
+    WORDS=$( \
+        COMP_CWORD=2 \
+        COMP_LINE='npm run ' \
+        COMP_POINT=8 \
+        npm completion -- npm run "$PARTIAL" 2>/dev/null \ |
+        sed -z 's;\n; ;g' \
+    )
+    COMPREPLY=($(compgen -W "$WORDS" "$PARTIAL"))
+}
+complete -F _n_complete n
+
 # peco を使ってディレクトリを移動する。
 # cdp() {
 #     DIR="$(ls | peco --on-cancel error)" && test -d $DIR && cd $DIR

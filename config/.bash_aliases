@@ -102,6 +102,19 @@ nx() {
     fi
 }
 
+_nx_complete() {
+    if test ! -d $(npm bin)
+    then
+        echo 'warn: $(npm bin) missing' >&2
+        return 1
+    fi
+
+    PARTIAL="${COMP_WORDS[COMP_CWORD]}"
+    WORDS=$(ls -1 $(npm bin) | sed -z 's;\n; ;g')
+    COMPREPLY=($(compgen -W "$WORDS" "$PARTIAL"))
+}
+complete -F _nx_complete nx
+
 # nの入力補完
 _n_complete() {
     PARTIAL="${COMP_WORDS[COMP_CWORD]}"

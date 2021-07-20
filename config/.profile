@@ -11,5 +11,7 @@ export PATH
 
 export LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH
 
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
 # test -n "$BASH_PROFILE" && test -r ~/.bash_profile && . ~/.bash_profile
 test -n "$BASH_VERSION" && test -r ~/.bashrc && . ~/.bashrc

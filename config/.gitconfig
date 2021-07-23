@@ -80,6 +80,9 @@
     # FIXME: Should it search for the latest commit with 'wip! Discard' in subject?
     discard-undo = merge --ff --ff-only HEAD@{1}
 
+    # (gitalias の uncommit をシャドウイングする。)
+    uncommit = git reset --mixed HEAD~
+
     # (gitalias の rbi をシャドウイングする。)
     rbi = rebase --interactive
 

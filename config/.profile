@@ -9,7 +9,9 @@ PATH="$HOME/bin:$PATH"
 PATH="$HOME/usr/bin:$PATH"
 export PATH
 
+# https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-environment-variables
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
+export DOTNET_NOLOGO=1
 
 # test -n "$BASH_PROFILE" && test -r ~/.bash_profile && . ~/.bash_profile
 test -n "$BASH_VERSION" && test -r ~/.bashrc && . ~/.bashrc

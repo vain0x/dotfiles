@@ -13,5 +13,7 @@ export PATH
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 export DOTNET_NOLOGO=1
 
+export VCPKG_DISABLE_METRICS=1
+
 # test -n "$BASH_PROFILE" && test -r ~/.bash_profile && . ~/.bash_profile
 test -n "$BASH_VERSION" && test -r ~/.bashrc && . ~/.bashrc

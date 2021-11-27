@@ -40,7 +40,46 @@ if (!(test-path $dotfiles)) {
     git clone -b windows $dotfilesUri $dotfiles
 }
 
-start-process 'powershell' -argumentList @('-c', "$dotfiles\windows.ps1") -workingDirectory $dotfiles -verb 'runas'
+./scripts/install-choco.ps1
+
+# FIXME: choco コマンドを使う前に、一度 PowerShell を閉じて開きなおす必要があったかもしれない(?)
+choco -?
+```
+
+## 管理者権限を要するスクリプト
+
+```powershell
+& './scripts/configure_windows.ps1'
+& './scripts/install_fonts.ps1'
+
+choco install -y `
+    pwsh `
+    delta `
+    docker-desktop `
+    dotnetcore-sdk `
+    firefox `
+    fd `
+    filezilla `
+    gpg4win `
+    nodejs `
+    ripgrep `
+    rust `
+    thunderbird `
+    vcbuildtools 2015.4 `
+    visualstudio2019community `
+    vscode `
+    yarn `
+    7zip
+
+# missed rust-analyzer, ham, hsp, 7za, ginger, knowbug
+# path to hsp3_home, hsp3_root
+```
+
+## 管理者権限のいらないスクリプト
+
+```sh
+./scripts/install_7za
+./scripts/install_hsp3
 ```
 
 ## リンク
@@ -63,10 +102,6 @@ VCS:
 シェル:
 
 - [pwsh](https://github.com/PowerShell/PowerShell/releases/latest)
-
-フォント:
-
-- [Source Han Code JP](https://github.com/adobe-fonts/source-han-code-jp/releases/latest)
 
 ### その他
 

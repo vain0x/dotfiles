@@ -2,7 +2,6 @@
 # [UbuntuTips/Desktop/InstallFont - Ubuntu Japanese Wiki](https://wiki.ubuntulinux.jp/UbuntuTips/Desktop/InstallFont#A.2BYktS1TBnMKQw8zC5MMgw.2FDDrMFkwiw-)
 
 # <https://github.com/JetBrains/JetBrainsMono>
-# <https://github.com/adobe-fonts/source-han-code-jp>
 
 set -eu
 
@@ -15,8 +14,6 @@ then
 fi
 
 mkdir -p ~/.fonts
-
-curl -L 'https://github.com/adobe-fonts/source-han-code-jp/archive/2.011R.tar.gz' | tar -xz -C ~/.fonts
 
 if test ! -d ~/.fonts/jet-brains-mono
 then

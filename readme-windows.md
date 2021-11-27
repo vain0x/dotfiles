@@ -56,7 +56,7 @@ choco install -y `
     pwsh `
     delta `
     docker-desktop `
-    dotnetcore-sdk `
+    dotnet-sdk `
     firefox `
     fd `
     filezilla `

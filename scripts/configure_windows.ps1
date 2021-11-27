@@ -69,4 +69,8 @@ if (!(test-path "$env:UserProfile/.gitconfig")) {
     echo "[include]`n`tpath = `"$gitConfig1`"`n`tpath = `"$gitConfig2`"`n`n`t[core]`n`texcludesfile = `"$dotfiles/config/.gitignore`"" >"$env:UserProfile/.gitconfig"
 }
 
+if (!(test-path "$env:UserProfile/bin/git-bash.exe")) {
+    new-item -itemType symbolicLink -value 'C:/Program Files/Git/bin/bash.exe' "$env:UserProfile/bin/git-bash.exe"
+}
+
 echo "TRACE: 終了 $PSCommandPath"

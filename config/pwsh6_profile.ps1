@@ -4,8 +4,6 @@
 # Git
 # ------------------------------------------------
 
-new-alias git-bash C:/Program` Files/Git/bin/bash.exe
-
 # Git command
 function g() {
     git $(if ($args.length -eq 0) { 's' } else { $args })

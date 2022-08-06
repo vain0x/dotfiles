@@ -4,7 +4,7 @@
 PATH="$HOME/src/node-v16.13.1/bin:$PATH"
 PATH="$HOME/.cargo/bin:$PATH"
 PATH="$HOME/.dotnet/tools:$PATH"
-PATH="$HOME/.local:$PATH"
+PATH="$HOME/.local/bin:$PATH"
 PATH="$HOME/bin:$PATH"
 PATH="$HOME/usr/bin:$PATH"
 export PATH

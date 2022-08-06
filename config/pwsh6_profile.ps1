@@ -1,5 +1,16 @@
 # pwsh (PowerShell)
 
+# Change prompt. This looks like:
+#       PS $PWD
+#       >
+# <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_prompts>
+function prompt {
+    $cwd = $(Get-Location).Path.Replace('\', '/')
+
+    "`n`e[90mPS `e[01;34m$cwd`e[0m  `n" +
+        "`e[01;32m" + ($(if ($NestedPromptLevel -ge 1) { '>>' }) + '> ') + "`e[0m"
+}
+
 # ------------------------------------------------
 # Git
 # ------------------------------------------------
@@ -37,6 +48,22 @@ function n() {
 # ------------------------------------------------
 # その他
 # ------------------------------------------------
+
+# Create an empty file or update last-write time.
+function touch($file) {
+    $dir = [System.IO.Path]::GetDirectoryName($file)
+    if ($dir -ne '' -and !(test-path $dir)) {
+        mkdir -p $dir
+    }
+
+    if (test-path $file) {
+        $t = [System.DateTime]::Now
+        [System.IO.File]::SetLastAccessTime($file, $t)
+        [System.IO.File]::SetLastWriteTime($file, $t)
+    } else {
+        new-item $file
+    }
+}
 
 function rm-rf() {
     Remove-Item -Recurse -Force $args

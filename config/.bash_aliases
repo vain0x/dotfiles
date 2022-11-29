@@ -84,11 +84,11 @@ test -f /usr/share/bash-completion/completions/git && . /usr/share/bash-completi
 __git_complete g __git_main
 
 # npmの入力補完をインストールする。
-if test ! -r $HOME/.npm_completion && npm --version >/dev/null
+if test ! -r "$HOME/.local/bin/npm-completion" && npm --version >/dev/null
 then
-    npm completion >$HOME/.npm_completion
-    echo ". '$HOME/.npm_completion'" >>~/.bashrc
-    . $HOME/.npm_completion
+    npm completion >"$HOME/.local/bin/npm-completion"
+    echo ". '$HOME/.local/bin/npm-completion'" >>~/.bashrc
+    . "$HOME/.local/bin/npm-completion"
 fi
 
 # npm でローカルにインストールしたコマンドを実行する。

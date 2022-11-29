@@ -11,15 +11,17 @@ sudo add-apt-repository ppa:git-core/ppa
 sudo apt update
 sudo apt install -y git
 
+mkdir -f "$HOME/.config/git"
+
 # 設定ファイルを配置する。
-if test ! -f ~/.gitconfig
+if test ! -f "$HOME/.config/git/config"
 then
-    cat >~/.gitconfig <<END
+    cat >"$HOME/.config/git/config" <<END
 [include]
     path = "$DOTFILES/vendor/gitalias/gitalias.txt"
-    path = "$DOTFILES/config/.gitconfig"
+    path = "$DOTFILES/config/git/config"
 
 [core]
-    excludesfile = "$DOTFILES/config/.gitignore"
+    excludesfile = "$DOTFILES/config/git/ignore"
 END
 fi

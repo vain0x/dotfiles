@@ -4,7 +4,6 @@
 PATH="$HOME/.local/bin:$PATH"
 PATH="$HOME/.cargo/bin:$PATH"
 PATH="$HOME/.dotnet/tools:$PATH"
-PATH="$HOME/.local/share/node-v16.13.1/bin:$PATH"
 PATH="$HOME/.local/share/npm/bin:$PATH"
 export PATH
 

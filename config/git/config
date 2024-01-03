@@ -1,9 +1,9 @@
+[user]
+    # ユーザー名が設定されていないときにコンピュータのユーザー名を利用するかどうか。(true: しない)
+    useConfigOnly = true
 [core]
     # コミットメッセージなどを編集するときのコマンド
     editor = code --wait
-
-    # すべてのリポジトリに適用する除外設定
-    excludesfile = ~/.gitignore
 
     pager = delta --light
 
@@ -14,10 +14,10 @@
 [gui]
     encoding = utf-8
     stageuntracked = no
-[include]
-    path = ~/.gitalias.txt
 [interactive]
-    diffFilter = delta --color-only
+    diffFilter = delta --color-only --light
+[log]
+    date = iso
 [merge]
     # ファストフォワード・マージを使わず、必ずマージコミットを作成する。
     # (ファストフォワード・マージがしたいときは merge --ff を使う。)
@@ -50,11 +50,15 @@
     c = commit --verbose
 
     # WIP コミットを作る。(空のプルリクエストを作るときなどに使う。)
-    c-wip = !git reset && git commit --allow-empty -m WIP
+    # USAGE: c-wip <message>
+    #
+    # 何らかの変更が stage にある場合は commit のみ行う。
+    # 変更が stage されていない場合は、すべてのファイルを add してから commit する。
+    c-wip = !"f() { if test -z \"$(git diff --cached)\"; then git add $(git rev-parse --show-toplevel); fi && git commit --allow-empty -m \"wip! $* [skip ci]\"; }; f"
 
     # ドラフトコミットを作る。(一時的に内容を保存するときに使う。)
     # USAGE: git c-draft <message>
-    c-draft = !"f() { git commit -m \"wip! $1\"; } ; f"
+    c-draft = !"f() { git commit -m \"wip! $* [skip ci]\"; }; f"
 
     # バックアップコミットを作る。
     c-backup = !git add $(git rev-parse --show-toplevel) && git commit -m Backup
@@ -70,11 +74,14 @@
 
     # 作業ツリーのすべての変更を消去する。(git reset と違って、変更を一度コミットして reflog に残す。)
     # 間違って使ったときは、discard-undo や reflog を使うか、生成されたコミットを cherry-pick する。
-    discard = !git add $(git rev-parse --show-toplevel) && git commit --allow-empty -m 'wip! Discard all changes' && git reset HEAD~ --hard
+    discard = !git add $(git rev-parse --show-toplevel) && git commit --allow-empty -m 'wip! Discard all changes [skip ci]' && git reset HEAD~ --hard
 
     # 直前に discard されたコミットを復元する。
     # FIXME: Should it search for the latest commit with 'wip! Discard' in subject?
     discard-undo = merge --ff --ff-only HEAD@{1}
+
+    # (gitalias の uncommit をシャドウイングする。)
+    uncommit = git reset --mixed HEAD~
 
     # (gitalias の rbi をシャドウイングする。)
     rbi = rebase --interactive
@@ -84,6 +91,8 @@
     # --------------------------------------------
 
     sw = switch
+
+    fork = switch -c
 
     # origin の各ブランチに対してローカルブランチを作る。
     b-all = "!f () { git branch --remote | awk -F'origin/' '!/HEAD|master/{print $2 \" \" $1\"origin/\"$2}' | xargs -L 1 git branch --track --force ; } ; f"
@@ -96,13 +105,14 @@
     # --------------------------------------------
 
     # 現在のステータスを表示する。
-    s = !git branch --verbose --sort=authordate && git status --short
+    s = !git branch --color --verbose --sort=authordate && git -c 'color.status=always' status --short 
 
     # --------------------------------------------
     # ログ
     # --------------------------------------------
 
-    l = !"f() { BASE=${1:-'master'} ; shift ; git log --graph --abbrev-commit --date=short --decorate --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset%C(yellow)%d%Creset %s %Cblue[%cn]%Creset %Cblue%G?%Creset' ${1:-'master'}..HEAD \"$@\" ; } ; f"
+    # log-from. 特定のコミットから現在のコミットまでの履歴を表示する。
+    l-from = !"f() { BASE=${1:-master} ; git log --graph --abbrev-commit --date=short --decorate --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset%C(yellow)%d%Creset %s %Cblue[%cn]%Creset %Cblue%G?%Creset' $BASE..HEAD \"$@\" ; } ; f"
 
     # log-latest. 最近のコミットログを表示する。(gitalias の ll をシャドウイングする。)
     ll = !git --no-pager log -n 8 --graph --abbrev-commit --date=iso --decorate --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset%C(yellow)%d%Creset %s %Cblue[%cn]%Creset %Cblue%G?%Creset'
@@ -119,6 +129,12 @@
 
     # カレントブランチを master にマージする。カレントブランチは削除して、master にスイッチする。
     m-mas = !br_name=`git symbolic-ref --short HEAD` && git checkout master && git merge ${br_name} --no-ff --edit && git branch -d ${br_name}
+
+    # カレントブランチを main にマージする。(m-dev と同様。)
+    m-main = !br_name=`git symbolic-ref --short HEAD` && git checkout main && git merge ${br_name} --no-ff --edit && git branch -d ${br_name}
+    
+    # カレントブランチを vnext にマージする。(m-dev と同様。)
+    m-vnext = !br_name=`git symbolic-ref --short HEAD` && git checkout vnext && git merge ${br_name} --no-ff --edit && git branch -d ${br_name}
 
     # --------------------------------------------
     # 同期
@@ -148,7 +164,7 @@
     x-ignore = !"f() { set -eu ; curl -sL \"https://www.gitignore.io/api/$1\" -o ${GIT_PREFIX:-.}/.gitignore ; grep 'is undefined' ${GIT_PREFIX:-.}/.gitignore >&2 || : ; } ; f"
 
     # 各種 dotfiles を生成する。
-    x-dotfiles = !"f() { git x-ignore \"$1\"; git x-attr; editorconfig \"$1\"; }; f"
+    x-dotfiles = !"f() { git x-ignore \"$1\"; git x-attr; cd ${GIT_PREFIX:-.}; editorconfig \"$1\"; }; f"
 
     # gitalias の設定ファイルを開く。
     x-gitalias = !"code ~/.gitalias.txt"

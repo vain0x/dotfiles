@@ -1,31 +1,19 @@
 # pwsh (PowerShell)
 
-# Linux-like env and alias
-new-alias which where.exe
-new-alias grep rg
-new-alias find fd
+# Change prompt. This looks like:
+#       PS $PWD
+#       >
+# <https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_prompts>
+function prompt {
+    $cwd = $(Get-Location).Path.Replace('\', '/')
 
-# GitBash の ~ を展開するときに必要。
-$env:HOME = $env:UserProfile
-
-# ------------------------------------------------
-# UTF-8 を強制する
-# ------------------------------------------------
-
-chcp 65001
-
-$OutputEncoding = New-Object System.Text.Utf8Encoding $False
-
-$PSDefaultParameterValues['*:Encoding'] = "utf8"
-$PSDefaultParameterValues['Out-File:Encoding'] = "utf8"
-
-$env:LESSCHARSET = 'utf-8'
+    "`n`e[90mPS `e[01;34m$cwd`e[0m  `n" +
+        "`e[01;32m" + ($(if ($NestedPromptLevel -ge 1) { '>>' }) + '> ') + "`e[0m"
+}
 
 # ------------------------------------------------
 # Git
 # ------------------------------------------------
-
-new-alias git-bash C:/Program` Files/Git/bin/bash.exe
 
 # Git command
 function g() {
@@ -40,26 +28,43 @@ new-alias nuget ./.nuget/nuget.exe
 new-alias paket ./.paket/paket.exe
 new-alias paket-boot ./.paket/paket.bootstrapper.exe
 
+# [タブ補完を有効にする](https://docs.microsoft.com/ja-jp/dotnet/core/tools/enable-tab-autocomplete#bash)
+# PowerShell parameter completion shim for the dotnet CLI
+Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
+    param($commandName, $wordToComplete, $cursorPosition)
+        dotnet complete --position $cursorPosition "$wordToComplete" | ForEach-Object {
+            [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+        }
+}
+
 # ------------------------------------------------
 # Node.js
 # ------------------------------------------------
 
-# new-alias n npm` run
+function n() {
+    npm run $args
+}
 
 # ------------------------------------------------
 # その他
 # ------------------------------------------------
 
-# 環境変数を表示する。
-function show-env() {
-    ls env:
+# Create an empty file or update last-write time.
+function touch($file) {
+    $dir = [System.IO.Path]::GetDirectoryName($file)
+    if ($dir -ne '' -and !(test-path $dir)) {
+        mkdir -p $dir
+    }
+
+    if (test-path $file) {
+        $t = [System.DateTime]::Now
+        [System.IO.File]::SetLastAccessTime($file, $t)
+        [System.IO.File]::SetLastWriteTime($file, $t)
+    } else {
+        new-item $file
+    }
 }
 
-# パスを表示する。
-function show-path() {
-    [system.Linq.Enumerable]::distinct($env:PATH.split(@(';'))) | sort
-}
-
-function set-userEnv($name, $value) {
-    [system.environment]::setEnvironmentVariable($name, $value, [environmentVariableTarget]::user)
+function rm-rf() {
+    Remove-Item -Recurse -Force $args
 }

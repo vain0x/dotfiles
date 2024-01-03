@@ -3,11 +3,9 @@
 
 # JetBrains Mono <https://github.com/JetBrains/JetBrainsMono>
 # Noto Fonts <https://www.google.com/get/noto/>
-# Source Han Code JP <https://github.com/adobe-fonts/source-han-code-jp>
 
 $jetBrainsMonoUri = 'https://github.com/JetBrains/JetBrainsMono/releases/download/v2.001/JetBrains.Mono.2.001.zip'
 $notoSansCjkJpUri = 'https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip'
-$sourceHanCodeJpUri = 'https://github.com/adobe-fonts/source-han-code-jp/archive/2.011R.zip'
 
 function ensureRemove($path) {
     if (test-path $path) {
@@ -46,6 +44,5 @@ echo "TRACE: 開始 $PSCommandPath"
 
 installFontZip 'jet-brains-mono' $jetBrainsMonoUri
 installFontZip 'noto-sans-cjk-jp' $notoSansCjkJpUri
-installFontZip 'source-han-code-jp' $sourceHanCodeJpUri
 
 echo "TRACE: 終了 $PSCommandPath"

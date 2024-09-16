@@ -1,0 +1,19 @@
+# open and save
+# funced -s fish_prompt
+# funced -s fish_vcs_prompt
+
+
+
+# file: fish_prompt.fish
+#   Modify the echo line.
+#   The prompt looks like:
+#       [fish] ~/pwd (branch) [$!]
+#       >
+echo -n -s \n (set_color 737373) '[fish] ' (set_color $color_cwd) (prompt_pwd) (fish_vcs_prompt)$normal ' '$prompt_status \n (set_color 737373) $suffix" " $normal
+
+
+
+# file: fish_vcs_prompt.fish
+#       https://qiita.com/fmsyt/items/4796d2c897fb1f4b1a10
+#   Comment out the line:
+#   # or fish_hg_prompt

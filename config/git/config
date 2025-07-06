@@ -189,6 +189,8 @@
     # ローカルリポジトリにおいてファイルパスを除外登録する。
     exclude-add = !head -n 1 >> $(git rev-parse --git-dir)/info/exclude
 
+    tags = "tag --list --format=\"%(color:yellow)%(refname:strip=2)%(color:reset) %(color:green)%(*authordate:short)%(color:reset) %(*subject)\""
+
     # --------------------------------------------
     # 自分用
     # --------------------------------------------

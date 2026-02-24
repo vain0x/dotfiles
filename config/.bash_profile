@@ -1,11 +1,14 @@
-#!/bin/sh
-# ログインシェルで実行される。
+#!/usr/bin/env sh
+# For Git Bash (login shell)
 
 PATH="$HOME/.local/bin:$PATH"
 PATH="$HOME/.cargo/bin:$PATH"
 PATH="$HOME/.dotnet/tools:$PATH"
 PATH="$HOME/.local/share/npm/bin:$PATH"
 export PATH
+
+# Commands excluded from bash_history
+export HISTIGNORE='g:g amend-all:g amend --no-edit:g b -D*:g c-all:g push -f*:g reset*:cd ..:ls:rm -f*:rm -rf*:exit:history:shutdown*:#*'
 
 # <https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html>
 export XDG_BIN_HOME="$HOME/.local/bin"
@@ -31,4 +34,4 @@ export NODE_REPL_HISTORY="$HOME/.local/state/node/repl_history"
 export VCPKG_DISABLE_METRICS=1
 
 # test -n "$BASH_PROFILE" && test -r ~/.bash_profile && . ~/.bash_profile
-test -n "$BASH_VERSION" && test -r ~/.bashrc && . ~/.bashrc
+# test -n "$BASH_VERSION" && test -r ~/.bashrc && . ~/.bashrc

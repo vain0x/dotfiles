@@ -11,7 +11,7 @@ install_bash_config() {
     test -f "$DEST" || echo "test -r '$SRC' && . '$SRC'" >$DEST
 }
 
-install_bash_config "$DOTFILES/config/.bash_aliases" ~/.bash_aliases
-install_bash_config "$DOTFILES/config/.profile" ~/.profile
+install_bash_config "$DOTFILES/config/.bashrc" ~/.bashrc
+install_bash_config "$DOTFILES/config/.bash_profile" ~/.bash_profile
 
-. ~/.profile
+. ~/.bash_profile
